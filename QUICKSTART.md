@@ -24,13 +24,13 @@ If your project needs to access location services, it'll also need the following
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 ```
 
-###The MapView
-The ```MapView``` class is the key component of our library. It behaves like any other ```ViewGroup``` and its behavior can be changed statically with an [XML layout](http://developer.android.com/guide/topics/ui/declaring-layout.html) file, or programmatically during runtime.
+###The com.mapbox.sdk.MapView
+The ```com.mapbox.sdk.MapView``` class is the key component of our library. It behaves like any other ```ViewGroup``` and its behavior can be changed statically with an [XML layout](http://developer.android.com/guide/topics/ui/declaring-layout.html) file, or programmatically during runtime.
 
 #### XML layout
-To add the ```MapView``` as a layout element, add the following to your xml file:
+To add the ```com.mapbox.sdk.MapView``` as a layout element, add the following to your xml file:
 ```xml
-<com.mapbox.mapboxsdk.views.MapView
+<com.mapbox.sdk.MapView
 android:id="@+id/mapview"
 android:layout_width="fill_parent"
 android:layout_height="fill_parent"
@@ -46,10 +46,10 @@ this.findViewById(R.id.mapview);
 
 #### On runtime
 
-On runtime you can create a new MapView by specifying the context of the application and a valid [MapBox mapid](https://www.mapbox.com/developers/api-overview/), a TileJSON file or a zxy image template.
+On runtime you can create a new com.mapbox.sdk.MapView by specifying the context of the application and a valid [MapBox mapid](https://www.mapbox.com/developers/api-overview/), a TileJSON file or a zxy image template.
 
 ```java
-MapView mapView = new MapView(this, "examples.map-vyofok3q");
+com.mapbox.sdk.MapView mapView = new com.mapbox.sdk.MapView(this, "examples.map-vyofok3q");
 ```
 
 And set it as the current view like this:
@@ -59,7 +59,7 @@ this.setContentView(mapView);
 
 ### Overlays
 
-Anything visual that is displayed over the map, maintaining its geographical position, we call it an ```Overlay```. To access a MapView's overlays at any point during runtime, use:
+Anything visual that is displayed over the map, maintaining its geographical position, we call it an ```Overlay```. To access a com.mapbox.sdk.MapView's overlays at any point during runtime, use:
 
 ```java
 mapView.getOverlays();
@@ -100,7 +100,7 @@ To add anything with a higher degree of  customization you can declare your own 
 ```java
 class AnyOverlay extends Overlay{
     @Override
-    protected void draw(Canvas canvas, MapView mapView, boolean shadow) {		
+    protected void draw(Canvas canvas, com.mapbox.sdk.MapView mapView, boolean shadow) {
         //do anything with the Canvas object
     }
 }
@@ -114,7 +114,7 @@ mapView.switchToLayer("examples.map-vyofok3q");
 ```
 
 ### Screen rotation
-By default, every time the screen is rotated, Android will call ```onCreate``` and return all states in the app to their inital values. This includes current zoom level and position of the MapView. The simplest way to avoid this is adding this line to your ```AndroidManifest.xml```, inside ```<activity>```:
+By default, every time the screen is rotated, Android will call ```onCreate``` and return all states in the app to their inital values. This includes current zoom level and position of the com.mapbox.sdk.MapView. The simplest way to avoid this is adding this line to your ```AndroidManifest.xml```, inside ```<activity>```:
 
 	android:configChanges="orientation|screenSize|uiMode"
 
