@@ -2,20 +2,23 @@ buildscript {
 
     repositories {
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:0.8.+'
         classpath 'com.github.dcendents:android-maven-plugin:1.0'
+        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7'
     }
 
 }
 
 apply plugin: 'android-library'
 apply plugin: 'android-maven'
+apply plugin: 'nexus'
 
 group = 'com.mapbox.mapboxsdk'
-version = '1.0.0-SNAPSHOT'
+version = '0.1.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -24,15 +27,20 @@ repositories {
     }
 }
 
+// runtime dependencies
 dependencies {
     compile ('com.github.chrisbanes.bitmapcache:BitmapCache:2.4+@aar') {
         transitive = true
         exclude module: 'support-v4'
     }
     compile 'com.android.support:support-v4:19.1.+'
+    // http requests
     compile 'com.squareup.okhttp:okhttp:1.3.0'
+    // compatibility with older android versions
     compile 'com.nineoldandroids:library:2.4.0'
+    // disk caching
     compile 'com.jakewharton:disklrucache:2.0.1'
+    // type-safety tricks
     compile 'com.google.guava:guava:16.0.1'
 }
 
@@ -65,6 +73,7 @@ android {
             }
         }
     }
+
     lintOptions {
         abortOnError false
     }
@@ -72,6 +81,8 @@ android {
 
 android.libraryVariants.all { variant ->
 
+    // build javadoc documentation, making sure to exclude generated files
+    // like R.java and include links to Android-specific functionality.
     task("generate${variant.name}Javadoc", type: Javadoc) {
         title = "$name $version API"
         description "Generates Javadoc for $variant.name."
@@ -93,5 +104,36 @@ android.libraryVariants.all { variant ->
     task.from variant.javaCompile.destinationDir
     artifacts.add('archives', task);
 
+}
+
+modifyPom {
+    project {
+        name 'Mapbox Android SDK'
+        description 'An Open-Source Library for Flexible, Interactive, and Fast Maps'
+        url 'https://github.com/mapbox/mapbox-android-sdk'
+        inceptionYear '2014'
+
+        scm {
+            url 'https://github.com/mapbox/mapbox-android-sdk'
+            connection 'scm:https://mapbox@github.com/mapbox/mapbox-android-sdk.git'
+            developerConnection 'scm:git://github.com/mapbox/mapbox-android-sdk.git'
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'mapbox'
+                name 'Tom MacWright'
+                email 'tom@macwright.org'
+            }
+        }
+    }
 }
 
